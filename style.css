@@ -24,7 +24,7 @@ body {
 }
 
 .container img {
-  width: 250px;
+  width: 300px;
   height: 100px;
   margin-bottom: 20px;
 }
@@ -59,7 +59,7 @@ input {
 .login-btn,
 .signup-btn {
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 15px;
   color: white;
   width: 100%;
   max-width: 100px;
@@ -69,6 +69,7 @@ input {
   margin-bottom: 15px;
   cursor: pointer;
 }
+
 
 .login-btn:hover,
 .signup-btn:hover {
