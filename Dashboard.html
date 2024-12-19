@@ -4,226 +4,247 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Settings</title>
-    <link rel="stylesheet" href="Dashboard.css" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="stylesheet" href="settings.css" />
     <style>
-      /* CSS for grid layout */
-      #gridContainer {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr); /* 3 columns */
-        gap: 10px; /* Space between grid items */
-        margin: 20px; /* Margin around the grid */
+      /* The Modal (background) */
+      .modal {
+        display: none;
+        position: fixed;
+        right: 0;
+        z-index: 1;
+        top: 0;
       }
 
-      #gridContainer div {
+      /* Modal Content */
+      .modal-content {
+        background-color: #4a90e2;
+        margin: auto;
+        padding: 15px;
+        border: 1px solid #fff;
+        width: 60%;
+        height: 100vh;
         display: flex;
         flex-direction: column;
-        align-items: center; /* Center items horizontally */
-        justify-content: center; /* Center items vertically */
-        position: relative; /* For positioning the delete button */
+        margin-bottom: 40px;
       }
 
-      #gridContainer img {
-        width: 100%; /* Make images responsive */
-        height: auto; /* Maintain aspect ratio */
-        max-width: 150px; /* Set a max width for images */
+      /* The Close Button */
+      .close {
+        color: #000;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        margin-left: 90px;
       }
 
-      .delete-btn {
-        display: none; /* Hide delete button by default */
-        position: absolute; /* Position it over the image */
-        top: 5px;
-        right: 5px;
+      .close:hover,
+      .close:focus {
+        color: #fb0303;
+        text-decoration: none;
+        cursor: pointer;
       }
 
-      #gridContainer div:hover .delete-btn {
-        display: block; /* Show delete button on hover */
+      .set {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .language {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .profile {
+        text-align: center;
+        margin: 20px;
+      }
+
+      .profile img {
+        width: 150px;
+      }
+
+      .profile button img {
+        width: 40px;
+      }
+
+      .setting {
+        display: flex;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 40px;
+      }
+
+      .aud {
+        flex: 1 1 150px;
+        max-width: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .aud img {
+        width: 100%;
+        height: auto;
+        max-width: 100px;
+      }
+
+      /* Search Button Styling */
+      .search-button {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin-top: 40px; /* Adjusted margin for better spacing */
+      }
+
+      .search-button button {
+        padding: 5px 5px; /* Increased padding to make button bigger */
+        background-color: #fb9a40;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px; /* Reduced font size for the text */
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        width: 350px;
+      }
+
+      .search-button img {
+        width: 25px;
+        height: 25px;
+      }
+
+      .search-line {
+        border-top: 4px solid #000;
+        width: 500%;
+        margin-bottom: 20px;
+      }
+
+      /* Sign Out Button Styling */
+      .sign-out {
+        margin-top: 20px;
+        text-align: center;
+        padding: 10px 15px;
+        width: 60px;
+        color: white;
+        background-color: #fb9a40;
+        border-radius: 5px;
+        text-decoration: none;
+        border: 1px solid #ccc;
       }
     </style>
   </head>
   <body>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <div class="side-bar">
+          <div>
+            <span class="close">&times;</span>
+          </div>
+          <div class="set" style="margin-top: 60px">
+            <div class="language">
+              <img src="asset/Language.png" alt="" /><a
+                href="historylang.html"
+                style="text-decoration: none"
+                >Language</a
+              >
+            </div>
+            <div
+              style="display: flex; flex-direction: column; align-items: center"
+            >
+              <img src="asset/History.png" alt="" /><a
+                style="text-decoration: none"
+                href="History.html"
+                >History</a
+              >
+            </div>
+            <div
+              class="prof"
+              style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-bottom: 40px;
+              "
+            >
+              <img src="asset/Profile.png" alt="" /><a
+                href="profile.html"
+                style="text-decoration: none"
+                >Profile</a
+              >
+            </div>
+          </div>
+          <!-- Moved Sign Out Button Up -->
+          <a href="login.html" class="sign-out">Sign out</a>
+        </div>
+      </div>
+    </div>
+
     <div class="profile">
       <img src="asset/PrimaryLogo.png" alt="" />
+      <button id="myBtn"><img src="asset/Settings.png" alt="" /></button>
     </div>
 
     <hr />
     <!-- Content Section -->
-    <main class="content">
-      <div class="audio-card">
-        <a class="add-folder" onclick="addPicture()">
-          <input type="file" />
-        </a>
-        <div id="gridContainer"></div>
+    <main class="content" style="display: flex; flex-wrap: wrap">
+      <div
+        class="audio-grid"
+        style="
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          align-items: center;
+          margin: 10px;
+        "
+      >
+        <div class="audio-card" style="margin: 15px">
+          <button class="play-button">
+            <input type="file" id="myFileInput" accept="image/*" />
+          </button>
+        </div>
+
+        <div class="audio-card">
+          <button onclick="gotoAud()" class="play-button">
+            <div id="gallery" style="display: flex"></div>
+          </button>
+        </div>
       </div>
     </main>
 
-    <div class="search-line"></div>
-
-    <div class="search-button">
-      <button onclick="performSearch()">
-        <img src="asset/Search (2).png" alt="Search Icon" />
-      </button>
+    <hr />
+      <div class="search-button">
+        <button id="searchButton">
+          <img src="asset/Search (2).png" alt="Search Icon" />
+        </button>
+      </div>
     </div>
 
     <script>
-      window.onload = function () {
-        loadAndDisplaySavedPictures(); // Load and display saved pictures on page load
-      };
-
-      function addPicture() {
-        const input = document.createElement("input");
-        input.type = "file";
-        input.accept = "image/*";
-
-        document.body.appendChild(input);
-
-        input.onchange = function () {
-          const reader = new FileReader();
-
-          reader.onload = function (e) {
-            savePicture(e.target.result); // Save the uploaded picture
-          };
-
-          reader.readAsDataURL(this.files[0]); // Read the file as a data URL
-        };
-
-        // Remove the input element after selection
-        setTimeout(() => {
-          input.remove();
-        }, 100);
-      }
-
-      function savePicture(pictureData) {
-        let pictures = JSON.parse(localStorage.getItem("savedPictures")) || [];
-
-        // Check if the picture already exists
-        if (!pictures.includes(pictureData)) {
-          pictures.push(pictureData);
-          localStorage.setItem("savedPictures", JSON.stringify(pictures));
-
-          alert("Picture added successfully!");
-          displaySavedPicture(pictureData); // Display the saved picture
-        } else {
-          alert("This picture is already saved.");
-        }
-      }
-
-      function loadAndDisplaySavedPictures() {
-        const pictures =
-          JSON.parse(localStorage.getItem("savedPictures")) || [];
-        pictures.forEach((picture) => displaySavedPicture(picture)); // Display each saved picture
-      }
-
-      function displaySavedPicture(pictureData) {
-        const gridContainer = document.getElementById("gridContainer");
-        if (!gridContainer) return;
-
-        const img = document.createElement("img");
-        img.src = pictureData; // Set the image source to the uploaded picture
-        img.alt = "Saved Picture";
-
-        const deleteBtn = document.createElement("button");
-        deleteBtn.textContent = "Remove";
-        deleteBtn.className = "delete-btn"; // Add class for styling
-        deleteBtn.onclick = (event) => {
-          event.stopPropagation(); // Prevent the click from bubbling up
-          confirmDelete(pictureData); // Call the confirmation function
-        };
-
-        const container = document.createElement("div");
-        container.appendChild(img); // Append the image to the container
-        container.appendChild(deleteBtn); // Append the delete button to the container
-
-        gridContainer.appendChild(container); // Add the container to the grid
-      }
-
-      function confirmDelete(pictureData) {
-        const confirmation = confirm(
-          "Are you sure you want to delete this picture?"
-        );
-        if (confirmation) {
-          removePicture(pictureData); // Remove the picture if confirmed
-        }
-      }
-
-      function removePicture(pictureData) {
-        let pictures = JSON.parse(localStorage.getItem("savedPictures"));
-
-        if (pictures) {
-          const index = pictures.indexOf(pictureData);
-
-          if (index !== -1) {
-            pictures.splice(index, 1); // Remove the picture from the array
-
-            // Update localStorage
-            localStorage.setItem("savedPictures", JSON.stringify(pictures));
-
-            // Remove the image element from the DOM
-            const imgElement = document.querySelector(
-              `img[src="${pictureData}"]`
-            );
-            if (imgElement) {
-              imgElement.parentNode.remove(); // Remove the parent container
-            }
-
-            alert("Picture removed successfully.");
-          }
-        }
-      }
-
-      function performSearch() {
-        let searchTerm = prompt("Enter your search term:");
-
-        if (searchTerm && searchTerm.trim() !== "") {
-          searchTerm = searchTerm.toLowerCase();
-
-          // Assuming audioCards is defined somewhere in your code
-          let results = audioCards.filter(
-            (card) =>
-              card.title.toLowerCase().includes(searchTerm) ||
-              card.description.toLowerCase().includes(searchTerm)
-          );
-
-          if (results.length > 0) {
-            window.location.href = results[0].url;
-
-            var url = window.location.search;
-            var params = new URLSearchParams(url);
-            params.set("search_term", searchTerm);
-            window.history.replaceState(
-              {},
-              "",
-              "search.html?" + params.toString()
-            );
-          } else {
-            alert("No matching audio cards found.");
-          }
-        } else {
-          alert("Please enter a search term.");
-        }
-      }
-
-      // Modal functionality (if needed)
+      // Get the modal
       var modal = document.getElementById("myModal");
+
+      // Get the button that opens the modal
       var btn = document.getElementById("myBtn");
+
+      // Get the <span> element that closes the modal
       var span = document.getElementsByClassName("close")[0];
 
       // When the user clicks the button, open the modal
-      if (btn) {
-        btn.onclick = function () {
-          modal.style.display = "block";
-        };
-      }
+      btn.onclick = function () {
+        modal.style.display = "block";
+      };
 
       // When the user clicks on <span> (x), close the modal
-      if (span) {
-        span.onclick = function () {
-          modal.style.display = "none";
-        };
-      }
+      span.onclick = function () {
+        modal.style.display = "none";
+      };
 
       // When the user clicks anywhere outside of the modal, close it
       window.onclick = function (event) {
@@ -231,6 +252,98 @@
           modal.style.display = "none";
         }
       };
+
+      let deleteTimeout; // Variable to hold the timeout for deletion
+      let currentImageIndex; // Variable to hold the index of the image being deleted
+
+      // Function to load images from local storage and display them
+      function loadImages() {
+        const recentImageDataUrls =
+          JSON.parse(localStorage.getItem("recent-images")) || [];
+        const gallery = document.getElementById("gallery");
+        gallery.innerHTML = ""; // Clear the gallery
+
+        recentImageDataUrls.forEach((url, index) => {
+          const imgContainer = document.createElement("div");
+          imgContainer.style.position = "relative"; // For positioning
+
+          const img = document.createElement("img");
+          img.src = url;
+          img.className = "card";
+          img.style.width = "75%"; // This will set the width to 3/2 of its container
+          img.style.height = "auto";
+
+          // Set up event listeners for hold to delete on the image
+          img.addEventListener("mousedown", () => {
+            currentImageIndex = index; // Store the index of the image being held
+            deleteTimeout = setTimeout(() => {
+              // Show confirmation dialog after 1 second
+              if (confirm("Are you sure you want to delete this image?")) {
+                deleteImage(currentImageIndex);
+              }
+            }, 1000); // Hold for 1 second to prompt for deletion
+          });
+
+          img.addEventListener("mouseup", () => {
+            clearTimeout(deleteTimeout); // Clear the timeout if the button is released
+          });
+
+          img.addEventListener("mouseleave", () => {
+            clearTimeout(deleteTimeout); // Clear the timeout if the mouse leaves the image
+          });
+
+          imgContainer.appendChild(img);
+          gallery.appendChild(imgContainer);
+        });
+      }
+
+      // Function to delete an image
+      function deleteImage(index) {
+        const images = JSON.parse(localStorage.getItem("recent-images")) || [];
+        images.splice(index, 1); // Remove the image at the specified index
+        localStorage.setItem("recent-images", JSON.stringify(images)); // Update local storage
+        loadImages(); // Reload images to reflect changes
+      }
+
+      // Function to handle file input change
+      function handleFileInputChange(event) {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+
+          reader.addEventListener("load", () => {
+            // Get existing images from local storage
+            const images =
+              JSON.parse(localStorage.getItem("recent-images")) || [];
+            // If an image is being replaced, remove it from the array
+            if (currentImageIndex !== undefined) {
+              images[currentImageIndex] = reader.result; // Replace the image
+              currentImageIndex = undefined; // Reset the index
+            } else {
+              // Push the base64 string to the array
+              images.push(reader.result);
+            }
+            // Set the item in localStorage
+            localStorage.setItem("recent-images", JSON.stringify(images));
+            // Load images to display
+            loadImages();
+          });
+
+          reader.readAsDataURL(file);
+        }
+      }
+
+      // Event listener for file input
+      document
+        .querySelector("#myFileInput")
+        .addEventListener("change", handleFileInputChange);
+
+      // Load images on page loads
+      document.addEventListener("DOMContentLoaded", loadImages);
+
+     function gotoAud(){
+      window.location.href = "AudPlay.html";
+     }
     </script>
   </body>
 </html>
