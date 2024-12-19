@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings</title>
+    <link rel="stylesheet" href="Dashboard.css" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <style>
+      /* CSS for grid layout */
+      #gridContainer {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 3 columns */
+        gap: 10px; /* Space between grid items */
+        margin: 20px; /* Margin around the grid */
+      }
+
+      #gridContainer div {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center items horizontally */
+        justify-content: center; /* Center items vertically */
+        position: relative; /* For positioning the delete button */
+      }
+
+      #gridContainer img {
+        width: 100%; /* Make images responsive */
+        height: auto; /* Maintain aspect ratio */
+        max-width: 150px; /* Set a max width for images */
+      }
+
+      .delete-btn {
+        display: none; /* Hide delete button by default */
+        position: absolute; /* Position it over the image */
+        top: 5px;
+        right: 5px;
+      }
+
+      #gridContainer div:hover .delete-btn {
+        display: block; /* Show delete button on hover */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="profile">
+      <img src="asset/PrimaryLogo.png" alt="" />
+    </div>
+
+    <hr />
+    <!-- Content Section -->
+    <main class="content">
+      <div class="audio-card">
+        <a class="add-folder" onclick="addPicture()">
+          <input type="file" />
+        </a>
+        <div id="gridContainer"></div>
+      </div>
+    </main>
+
+    <div class="search-line"></div>
+
+    <div class="search-button">
+      <button onclick="performSearch()">
+        <img src="asset/Search (2).png" alt="Search Icon" />
+      </button>
+    </div>
+
+    <script>
+      window.onload = function () {
+        loadAndDisplaySavedPictures(); // Load and display saved pictures on page load
+      };
+
+      function addPicture() {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = "image/*";
+
+        document.body.appendChild(input);
+
+        input.onchange = function () {
+          const reader = new FileReader();
+
+          reader.onload = function (e) {
+            savePicture(e.target.result); // Save the uploaded picture
+          };
+
+          reader.readAsDataURL(this.files[0]); // Read the file as a data URL
+        };
+
+        // Remove the input element after selection
+        setTimeout(() => {
+          input.remove();
+        }, 100);
+      }
+
+      function savePicture(pictureData) {
+        let pictures = JSON.parse(localStorage.getItem("savedPictures")) || [];
+
+        // Check if the picture already exists
+        if (!pictures.includes(pictureData)) {
+          pictures.push(pictureData);
+          localStorage.setItem("savedPictures", JSON.stringify(pictures));
+
+          alert("Picture added successfully!");
+          displaySavedPicture(pictureData); // Display the saved picture
+        } else {
+          alert("This picture is already saved.");
+        }
+      }
+
+      function loadAndDisplaySavedPictures() {
+        const pictures =
+          JSON.parse(localStorage.getItem("savedPictures")) || [];
+        pictures.forEach((picture) => displaySavedPicture(picture)); // Display each saved picture
+      }
+
+      function displaySavedPicture(pictureData) {
+        const gridContainer = document.getElementById("gridContainer");
+        if (!gridContainer) return;
+
+        const img = document.createElement("img");
+        img.src = pictureData; // Set the image source to the uploaded picture
+        img.alt = "Saved Picture";
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Remove";
+        deleteBtn.className = "delete-btn"; // Add class for styling
+        deleteBtn.onclick = (event) => {
+          event.stopPropagation(); // Prevent the click from bubbling up
+          confirmDelete(pictureData); // Call the confirmation function
+        };
+
+        const container = document.createElement("div");
+        container.appendChild(img); // Append the image to the container
+        container.appendChild(deleteBtn); // Append the delete button to the container
+
+        gridContainer.appendChild(container); // Add the container to the grid
+      }
+
+      function confirmDelete(pictureData) {
+        const confirmation = confirm(
+          "Are you sure you want to delete this picture?"
+        );
+        if (confirmation) {
+          removePicture(pictureData); // Remove the picture if confirmed
+        }
+      }
+
+      function removePicture(pictureData) {
+        let pictures = JSON.parse(localStorage.getItem("savedPictures"));
+
+        if (pictures) {
+          const index = pictures.indexOf(pictureData);
+
+          if (index !== -1) {
+            pictures.splice(index, 1); // Remove the picture from the array
+
+            // Update localStorage
+            localStorage.setItem("savedPictures", JSON.stringify(pictures));
+
+            // Remove the image element from the DOM
+            const imgElement = document.querySelector(
+              `img[src="${pictureData}"]`
+            );
+            if (imgElement) {
+              imgElement.parentNode.remove(); // Remove the parent container
+            }
+
+            alert("Picture removed successfully.");
+          }
+        }
+      }
+
+      function performSearch() {
+        let searchTerm = prompt("Enter your search term:");
+
+        if (searchTerm && searchTerm.trim() !== "") {
+          searchTerm = searchTerm.toLowerCase();
+
+          // Assuming audioCards is defined somewhere in your code
+          let results = audioCards.filter(
+            (card) =>
+              card.title.toLowerCase().includes(searchTerm) ||
+              card.description.toLowerCase().includes(searchTerm)
+          );
+
+          if (results.length > 0) {
+            window.location.href = results[0].url;
+
+            var url = window.location.search;
+            var params = new URLSearchParams(url);
+            params.set("search_term", searchTerm);
+            window.history.replaceState(
+              {},
+              "",
+              "search.html?" + params.toString()
+            );
+          } else {
+            alert("No matching audio cards found.");
+          }
+        } else {
+          alert("Please enter a search term.");
+        }
+      }
+
+      // Modal functionality (if needed)
+      var modal = document.getElementById("myModal");
+      var btn = document.getElementById("myBtn");
+      var span = document.getElementsByClassName("close")[0];
+
+      // When the user clicks the button, open the modal
+      if (btn) {
+        btn.onclick = function () {
+          modal.style.display = "block";
+        };
+      }
+
+      // When the user clicks on <span> (x), close the modal
+      if (span) {
+        span.onclick = function () {
+          modal.style.display = "none";
+        };
+      }
+
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+    </script>
+  </body>
+</html>
